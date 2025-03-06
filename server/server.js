@@ -88,13 +88,17 @@ app.put('/api/todos/:id', (req, res) => {
 // Delete a todo
 app.delete('/api/todos/:id', (req, res) => {
     const id = parseInt(req.params.id);
+    console.log('Attempting to delete todo with ID:', id);
     const todoIndex = todos.findIndex(todo => todo.id === id);
     
+    console.log('Found todo at index:', todoIndex);
     if (todoIndex === -1) {
+        console.log('Todo not found');
         return res.status(404).json({ error: 'Todo not found' });
     }
     
-    todos.splice(todoIndex, 1);
+    const deletedTodo = todos.splice(todoIndex, 1)[0];
+    console.log('Deleted todo:', deletedTodo);
     res.json({ success: true });
 });
 

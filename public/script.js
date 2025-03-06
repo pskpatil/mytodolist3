@@ -81,16 +81,21 @@ async function toggleTodo(id) {
 // Delete a todo
 async function deleteTodo(id) {
     try {
+        console.log('Attempting to delete todo with ID:', id);
         const response = await fetch(`${API_URL}/todos/${id}`, {
             method: 'DELETE'
         });
         
         if (!response.ok) {
-            throw new Error('Failed to delete todo');
+            const errorData = await response.json();
+            console.error('Delete failed:', errorData);
+            throw new Error(errorData.error || 'Failed to delete todo');
         }
         
+        console.log('Todo deleted successfully');
         await loadTodos();
     } catch (error) {
+        console.error('Delete error:', error);
         showError('Failed to delete todo');
     }
 }
